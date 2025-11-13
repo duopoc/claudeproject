@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile - Health Progress{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                {% if profile.profile_picture %}
+                    <img src="{{ profile.profile_picture.url }}" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                {% else %}
+                    <div class="rounded-circle bg-primary d-inline-flex align-items-center justify-content-center mb-3" style="width: 150px; height: 150px;">
+                        <i class="bi bi-person-fill text-white" style="font-size: 4rem;"></i>
+                    </div>
+                {% endif %}
+                <h4>{{ profile.firstname }} {{ profile.lastname }}</h4>
+                <p class="text-muted">@{{ user.username }}</p>
+                <span class="badge bg-{% if profile.role == 'superuser' %}danger{% elif profile.role == 'admin' %}warning{% else %}info{% endif %}">
+                    {{ profile.get_role_display }}
+                </span>
+            </div>
+        </div>
+        
+        {% if mfa_warning %}
+        <div class="card mt-3 border-danger">
+            <div class="card-body bg-danger text-white">
+                <h5 class="card-title"><i class="bi bi-exclamation-triangle-fill"></i> MFA Required!</h5>
+                <p class="mb-2">Your account requires Multi-Factor Authentication (MFA) for security.</p>
+                <p class="mb-3"><strong>You must setup MFA before using the system.</strong></p>
+                <a href="{% url 'accounts:mfa_setup' %}" class="btn btn-light btn-lg w-100">
+                    <i class="bi bi-shield-lock"></i> Setup MFA Now
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="col-md-8">
+        {% if profile_incomplete %}
+        <div class="alert alert-danger">
+            <h6 class="alert-heading"><i class="bi bi-exclamation-triangle"></i> Profile Incomplete!</h6>
+            <p class="mb-0">Please complete all required fields (First name, Last name, Gender, Age, Phone) to use the system.</p>
+        </div>
+        {% endif %}
+        
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-pencil-square"></i> แก้ไขโปรไฟล์</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.firstname.label }}</label>
+                            {{ form.firstname }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.lastname.label }}</label>
+                            {{ form.lastname }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">{{ form.gender.label }}</label>
+                            {{ form.gender }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">{{ form.age.label }}</label>
+                            {{ form.age }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">{{ form.phone.label }}</label>
+                            {{ form.phone }}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.nickname.label }}</label>
+                        {{ form.nickname }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.profile_picture.label }}</label>
+                        {{ form.profile_picture }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save"></i> บันทึก
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

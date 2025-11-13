@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard - Health Progress{% endblock %}
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-speedometer2"></i> Health Dashboard</h2>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">ข้อมูลส่วนบุคคล</h5>
+    </div>
+    <div class="card-body">
+        <p><strong>ชื่อ-นามสกุล:</strong> {{ profile.firstname }} {{ profile.lastname }}</p>
+        <p><strong>อายุ:</strong> {{ profile.age }} ปี</p>
+        <p><strong>เพศ:</strong> {{ profile.get_gender_display }}</p>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-6 mb-3">
+        <div class="card" style="background-color: {{ bmi_status.color }}; color: white;">
+            <div class="card-body">
+                <h6>BMI</h6>
+                <h3>{{ latest_record.bmi }}</h3>
+                <p class="mb-0">{{ bmi_status.text }}</p>
+                <small>{{ bmi_status.risk }}</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-3">
+        <div class="card" style="background-color: {{ fat_status.color }}; color: white;">
+            <div class="card-body">
+                <h6>เปอร์เซ็นต์ไขมัน</h6>
+                <h3>{{ latest_record.fat_percent }}%</h3>
+                <p class="mb-0">{{ fat_status.text }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-3">
+        <div class="card" style="background-color: {{ visceral_status.color }}; color: white;">
+            <div class="card-body">
+                <h6>ไขมันในช่องท้อง</h6>
+                <h3>{{ latest_record.visceral_fat }}</h3>
+                <p class="mb-0">{{ visceral_status.text }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-3">
+        <div class="card" style="background-color: {{ muscle_status.color }}; color: white;">
+            <div class="card-body">
+                <h6>เปอร์เซ็นต์กล้ามเนื้อ</h6>
+                <h3>{{ latest_record.muscle_percent }}%</h3>
+                <p class="mb-0">{{ muscle_status.text }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Blood Pressure, Waist, and Blood Work Metrics -->
+<div class="row mb-4">
+    <div class="col-md-4 mb-3">
+        <div class="card" style="background-color: {{ blood_pressure_status.color }}; color: white;">
+            <div class="card-body">
+                <h6>ความดันโลหิต</h6>
+                <h3>{{ latest_record.blood_pressure_systolic }}/{{ latest_record.blood_pressure_diastolic }}</h3>
+                <p class="mb-0">{{ blood_pressure_status.text }}</p>
+                <small>ปกติ: {{ blood_pressure_status.normal_range }} mmHg</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card" style="background-color: {{ waist_status.color }}; color: white;">
+            <div class="card-body">
+                <h6>เส้นรอบเอว</h6>
+                <h3>{{ latest_record.waist }} cm</h3>
+                <p class="mb-0">{{ waist_status.text }}</p>
+                <small>ปกติ: {{ waist_status.normal_range }} cm</small>
+            </div>
+        </div>
+    </div>
+    {% if latest_record.cholesterol %}
+    <div class="col-md-4 mb-3">
+        <div class="card" style="background-color: {{ cholesterol_status.color }}; color: white;">
+            <div class="card-body">
+                <h6>Cholesterol</h6>
+                <h3>{{ latest_record.cholesterol }} mg/dL</h3>
+                <p class="mb-0">{{ cholesterol_status.text }}</p>
+                <small>ปกติ: {{ cholesterol_status.normal_range }} mg/dL</small>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<div class="row mb-4">
+    {% if latest_record.ldl %}
+    <div class="col-md-3 mb-3">
+        <div class="card" style="background-color: {{ ldl_status.color }}; color: white;">
+            <div class="card-body">
+                <h6>LDL</h6>
+                <h3>{{ latest_record.ldl }} mg/dL</h3>
+                <p class="mb-0">{{ ldl_status.text }}</p>
+                <small>ปกติ: {{ ldl_status.normal_range }} mg/dL</small>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if latest_record.hdl %}
+    <div class="col-md-3 mb-3">
+        <div class="card" style="background-color: {{ hdl_status.color }}; color: white;">
+            <div class="card-body">
+                <h6>HDL</h6>
+                <h3>{{ latest_record.hdl }} mg/dL</h3>
+                <p class="mb-0">{{ hdl_status.text }}</p>
+                <small>ปกติ: {{ hdl_status.normal_range }} mg/dL</small>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if latest_record.fbs %}
+    <div class="col-md-3 mb-3">
+        <div class="card" style="background-color: {{ fbs_status.color }}; color: white;">
+            <div class="card-body">
+                <h6>FBS</h6>
+                <h3>{{ latest_record.fbs }} mg/dL</h3>
+                <p class="mb-0">{{ fbs_status.text }}</p>
+                <small>ปกติ: {{ fbs_status.normal_range }} mg/dL</small>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if latest_record.triglycerides %}
+<div class="col-md-3 mb-3">
+    <div class="card" style="background-color: {{ triglycerides_status.color }}; color: white;">
+        <div class="card-body">
+            <h6>Triglycerides</h6>
+            <h3>{{ latest_record.triglycerides }} mg/dL</h3>
+            <p class="mb-0">{{ triglycerides_status.text }}</p>
+            <small>ปกติ: {{ triglycerides_status.normal_range }} mg/dL</small>
+        </div>
+    </div>
+</div>
+{% endif %}
+</div>
+
+{% comment %} <div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">สรุปภาพรวมสุขภาพ</h5>
+    </div>
+    <div class="card-body">
+        {% for overview_item in health_overview %}
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> {{ overview_item }}
+        </div>
+        {% endfor %}
+    </div>
+</div> {% endcomment %}
+<div class="card-body">
+    <div class="card-header">
+        <h5 class="mb-0">ข้อแนะนำสำหรับทุกข้อที่ผิดปกติ - วางแผนปรับพฤติกรรมการใช้ชีวิต (การกิน ออกกำลังกาย นอนหลับ จัดการความเครียด การหลีกเลี่ยงสารพิษ บุหรี่ แอลกอฮอล์) ร่วมกับที่ปรึกษาด้านสุขภาพ</h5>
+    </div>
+    <div class="card-body">
+    {% for overview_item in health_overview %}
+        {% if overview_item.text %}
+            <div class="alert alert-{{ overview_item.color }} mb-2">
+                {% if overview_item.color == 'success' %}
+                    <i class="bi bi-check-circle-fill"></i>
+                {% elif overview_item.color == 'warning' %}
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                {% elif overview_item.color == 'danger' %}
+                    <i class="bi bi-x-circle-fill"></i>
+                {% else %}
+                    <i class="bi bi-info-circle"></i>
+                {% endif %}
+                {{ overview_item.text }}
+            </div>
+        {% else %}
+            <div style="height: 10px;"></div>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}

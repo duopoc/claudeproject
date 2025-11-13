@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block title %}Add Health Record{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-plus-circle"></i> เพิ่มข้อมูลสุขภาพ</h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <strong>ข้อมูลผู้ใช้:</strong> {{ profile.firstname }} {{ profile.lastname }} ({{ profile.get_gender_display }}, {{ profile.age }} ปี, โทร: {{ profile.phone }})
+                </div>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">ความดันบน</label>
+                            {{ form.blood_pressure_systolic }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">ความดันล่าง</label>
+                            {{ form.blood_pressure_diastolic }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">ส่วนสูง (cm)</label>
+                            {{ form.height }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">น้ำหนัก (kg)</label>
+                            {{ form.weight }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">เส้นรอบเอว (cm)</label>
+                            {{ form.waist }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Cholesterol (mg/dL)</label>
+                            {{ form.cholesterol }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">LDL (mg/dL)</label>
+                            {{ form.ldl }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">HDL (mg/dL)</label>
+                            {{ form.hdl }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">FBS (mg/dL)</label>
+                            {{ form.fbs }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Triglycerides (mg/dL)</label>
+                            {{ form.triglycerides }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">BMI</label>
+                            {{ form.bmi }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">เปอร์เซ็นต์ไขมัน</label>
+                            {{ form.fat_percent }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">ไขมันในช่องท้อง</label>
+                            {{ form.visceral_fat }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">เปอร์เซ็นต์กล้ามเนื้อ</label>
+                            {{ form.muscle_percent }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">BMR</label>
+                            {{ form.bmr }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">อายุร่างกาย</label>
+                            {{ form.body_age }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">วันที่บันทึก</label>
+                            {{ form.recorded_at }}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">
+                        <i class="bi bi-save"></i> บันทึกข้อมูล
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
