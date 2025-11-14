@@ -39,8 +39,44 @@
     <div class="col-md-8">
         {% if profile_incomplete %}
         <div class="alert alert-danger">
-            <h6 class="alert-heading"><i class="bi bi-exclamation-triangle"></i> Profile Incomplete!</h6>
-            <p class="mb-0">Please complete all required fields (First name, Last name, Gender, Age, Phone) to use the system.</p>
+            <h6 class="alert-heading"><i class="bi bi-exclamation-triangle"></i> โปรไฟล์ไม่สมบูรณ์!</h6>
+            <p class="mb-0">กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน (ชื่อ, นามสกุล, เพศ, วันเกิด, เบอร์โทรศัพท์) เพื่อเข้าใช้งานระบบ</p>
+        </div>
+        {% endif %}
+
+        <!-- Age Display Card -->
+        {% if profile.birthdate %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="bi bi-calendar-heart health-icon"></i> อายุของคุณ
+                </h5>
+                <div class="row text-center">
+                    <div class="col-4">
+                        <div class="p-3">
+                            <h2 class="text-gradient mb-0">{{ profile.calculate_age.years }}</h2>
+                            <small class="text-muted">ปี</small>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="p-3">
+                            <h2 class="text-gradient mb-0">{{ profile.calculate_age.months }}</h2>
+                            <small class="text-muted">เดือน</small>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="p-3">
+                            <h2 class="text-gradient mb-0">{{ profile.calculate_age.days }}</h2>
+                            <small class="text-muted">วัน</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-2">
+                    <small class="text-muted">
+                        <i class="bi bi-calendar3"></i> วันเกิด: {{ profile.birthdate|date:"d/m/Y" }}
+                    </small>
+                </div>
+            </div>
         </div>
         {% endif %}
         
@@ -63,15 +99,21 @@
                     </div>
                     <div class="row">
                         <div class="col-md-4 mb-3">
-                            <label class="form-label">{{ form.gender.label }}</label>
+                            <label class="form-label">
+                                <i class="bi bi-gender-ambiguous"></i> {{ form.gender.label }}
+                            </label>
                             {{ form.gender }}
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label class="form-label">{{ form.age.label }}</label>
-                            {{ form.age }}
+                            <label class="form-label">
+                                <i class="bi bi-calendar-event"></i> {{ form.birthdate.label }}
+                            </label>
+                            {{ form.birthdate }}
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label class="form-label">{{ form.phone.label }}</label>
+                            <label class="form-label">
+                                <i class="bi bi-telephone"></i> {{ form.phone.label }}
+                            </label>
                             {{ form.phone }}
                         </div>
                     </div>

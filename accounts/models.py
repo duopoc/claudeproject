@@ -5,6 +5,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from datetime import date
+from dateutil.relativedelta import relativedelta
 import pyotp
 
 
@@ -25,7 +27,8 @@ class UserProfile(models.Model):
     firstname = models.CharField(max_length=100, verbose_name='ชื่อ', default='', blank=True)
     lastname = models.CharField(max_length=100, verbose_name='นามสกุล', default='', blank=True)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES, verbose_name='เพศ', default='male', blank=True)
-    age = models.IntegerField(verbose_name='อายุ', default=30, blank=True)
+    birthdate = models.DateField(verbose_name='วันเกิด', null=True, blank=True)
+    age = models.IntegerField(verbose_name='อายุ (เก่า)', default=30, blank=True, null=True)  # Keep for migration compatibility
     phone = models.CharField(max_length=20, verbose_name='เบอร์โทรศัพท์', default='', blank=True)
     profile_picture = models.ImageField(upload_to='profiles/', null=True, blank=True, verbose_name='รูปโปรไฟล์')
     nickname = models.CharField(max_length=50, null=True, blank=True, verbose_name='ชื่อเล่น')
@@ -45,7 +48,35 @@ class UserProfile(models.Model):
     
     def __str__(self):
         return f"{self.firstname} {self.lastname} ({self.user.username})"
-    
+
+    def calculate_age(self):
+        """Calculate age from birthdate and return (years, months, days)"""
+        if not self.birthdate:
+            return None
+
+        today = date.today()
+        age_delta = relativedelta(today, self.birthdate)
+
+        return {
+            'years': age_delta.years,
+            'months': age_delta.months,
+            'days': age_delta.days,
+            'total_days': (today - self.birthdate).days
+        }
+
+    def get_age_display(self):
+        """Get formatted age display in Thai"""
+        age = self.calculate_age()
+        if not age:
+            return 'ไม่ระบุวันเกิด'
+
+        return f"{age['years']} ปี {age['months']} เดือน {age['days']} วัน"
+
+    def get_age_years(self):
+        """Get age in years only (for compatibility)"""
+        age = self.calculate_age()
+        return age['years'] if age else 0
+
     def generate_mfa_secret(self):
         """Generate a new MFA secret key"""
         if not self.mfa_secret:

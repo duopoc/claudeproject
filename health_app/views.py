@@ -41,7 +41,7 @@ def dashboard_view(request):
         return redirect('accounts:mfa_setup')
     
     # Check if profile is complete
-    if not profile.firstname or not profile.lastname or not profile.age:
+    if not profile.firstname or not profile.lastname or not profile.birthdate:
         messages.warning(request, 'กรุณาเพิ่มข้อมูลโปรไฟล์ให้ครบถ้วนก่อนใช้งาน')
         return redirect('accounts:profile')
     
@@ -190,7 +190,7 @@ def generate_health_overview(record, profile, bmi_status, fat_status, visceral_s
     
     # Muscle Percent Recommendations (age and gender-based)
     muscle = float(record.muscle_percent)
-    age = profile.age
+    age = profile.get_age_years()
     
     if gender == 'female':
         if 18 <= age <= 39:
@@ -308,9 +308,9 @@ def generate_health_overview(record, profile, bmi_status, fat_status, visceral_s
 def add_metric_view(request):
     """Add new health metric"""
     profile = request.user.profile
-    
+
     # Check if profile is complete
-    if not profile.firstname or not profile.lastname or not profile.age:
+    if not profile.firstname or not profile.lastname or not profile.birthdate:
         messages.warning(request, 'กรุณาเพิ่มข้อมูลโปรไฟล์ให้ครบถ้วนก่อนเพิ่มข้อมูลสุขภาพ')
         return redirect('accounts:profile')
     
@@ -536,7 +536,7 @@ def get_fat_normal_range(profile):
 
 def get_muscle_normal_range(profile):
     """Get normal muscle percent range based on age and gender"""
-    age = profile.age
+    age = profile.get_age_years()
     gender = profile.gender
     
     if gender == 'female':

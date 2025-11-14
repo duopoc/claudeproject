@@ -62,7 +62,7 @@
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label for="{{ form.gender.id_for_label }}" class="form-label">
-                                {{ form.gender.label }}
+                                <i class="bi bi-gender-ambiguous"></i> {{ form.gender.label }}
                             </label>
                             {{ form.gender }}
                             {% if form.gender.errors %}
@@ -70,12 +70,12 @@
                             {% endif %}
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label for="{{ form.age.id_for_label }}" class="form-label">
-                                {{ form.age.label }}
+                            <label for="{{ form.birthdate.id_for_label }}" class="form-label">
+                                <i class="bi bi-calendar-event"></i> {{ form.birthdate.label }}
                             </label>
-                            {{ form.age }}
-                            {% if form.age.errors %}
-                                <div class="text-danger small">{{ form.age.errors }}</div>
+                            {{ form.birthdate }}
+                            {% if form.birthdate.errors %}
+                                <div class="text-danger small">{{ form.birthdate.errors }}</div>
                             {% endif %}
                         </div>
                         <div class="col-md-4 mb-3">
@@ -108,7 +108,22 @@
                             <div class="text-danger small">{{ form.password2.errors }}</div>
                         {% endif %}
                     </div>
-                    
+
+                    <div class="mb-3">
+                        <div class="form-check">
+                            {{ form.pdpa_accepted }}
+                            <label class="form-check-label" for="{{ form.pdpa_accepted.id_for_label }}">
+                                <strong>{{ form.pdpa_accepted.label }}</strong>
+                                <button type="button" class="btn btn-link btn-sm p-0 ms-1" data-bs-toggle="modal" data-bs-target="#pdpaModal">
+                                    <i class="bi bi-info-circle"></i> อ่านนโยบาย
+                                </button>
+                            </label>
+                            {% if form.pdpa_accepted.errors %}
+                                <div class="text-danger small">{{ form.pdpa_accepted.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
                     <button type="submit" class="btn btn-primary w-100 mb-3">
                         <i class="bi bi-person-plus"></i> สมัครสมาชิก
                     </button>
@@ -116,12 +131,77 @@
                 
                 <div class="text-center">
                     <p class="mb-0">
-                        มีบัญชีอยู่แล้ว? 
+                        มีบัญชีอยู่แล้ว?
                         <a href="{% url 'accounts:login' %}" class="text-decoration-none">
                             <strong>เข้าสู่ระบบ</strong>
                         </a>
                     </p>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- PDPA Modal -->
+<div class="modal fade" id="pdpaModal" tabindex="-1" aria-labelledby="pdpaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white;">
+                <h5 class="modal-title" id="pdpaModalLabel">
+                    <i class="bi bi-shield-lock-fill"></i> นโยบายความเป็นส่วนตัว (PDPA)
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6 class="fw-bold text-success">1. การเก็บรวบรวมข้อมูลส่วนบุคคล</h6>
+                <p>เราเก็บรวบรวมข้อมูลส่วนบุคคลดังต่อไปนี้:</p>
+                <ul>
+                    <li>ข้อมูลส่วนตัว: ชื่อ นามสกุล วันเกิด เพศ เบอร์โทรศัพท์</li>
+                    <li>ข้อมูลสุขภาพ: ความดันโลหิต น้ำหนัก ส่วนสูง ค่าไขมัน ระดับน้ำตาล และข้อมูลสุขภาพอื่นๆ</li>
+                    <li>ข้อมูลการใช้งาน: ประวัติการเข้าสู่ระบบ IP Address</li>
+                </ul>
+
+                <h6 class="fw-bold text-success mt-3">2. วัตถุประสงค์ในการใช้ข้อมูล</h6>
+                <ul>
+                    <li>เพื่อให้บริการติดตามและวิเคราะห์ข้อมูลสุขภาพ</li>
+                    <li>เพื่อให้คำแนะนำสุขภาพที่เหมาะสมกับแต่ละบุคคล</li>
+                    <li>เพื่อพัฒนาและปรับปรุงระบบให้มีประสิทธิภาพมากขึ้น</li>
+                    <li>เพื่อการรักษาความปลอดภัยและป้องกันการใช้งานที่ผิดกฎหมาย</li>
+                </ul>
+
+                <h6 class="fw-bold text-success mt-3">3. การเปิดเผยข้อมูล</h6>
+                <p>เราจะไม่เปิดเผยข้อมูลส่วนบุคคลของคุณให้แก่บุคคลที่สาม เว้นแต่:</p>
+                <ul>
+                    <li>ได้รับความยินยอมจากคุณ</li>
+                    <li>เป็นไปตามที่กฎหมายกำหนด</li>
+                    <li>เพื่อปกป้องสิทธิและทรัพย์สินของเราและผู้ใช้งาน</li>
+                </ul>
+
+                <h6 class="fw-bold text-success mt-3">4. การรักษาความปลอดภัยข้อมูล</h6>
+                <p>
+                    เราใช้มาตรการรักษาความปลอดภัยทางเทคนิคและการบริหารจัดการที่เหมาะสม เพื่อปกป้องข้อมูลส่วนบุคคล
+                    จากการสูญหาย การเข้าถึง ทำลาย ใช้ แปลง แก้ไข หรือเปิดเผยโดยไม่ได้รับอนุญาต
+                </p>
+
+                <h6 class="fw-bold text-success mt-3">5. สิทธิของเจ้าของข้อมูล</h6>
+                <p>คุณมีสิทธิในการ:</p>
+                <ul>
+                    <li>เข้าถึงและขอรับสำเนาข้อมูลส่วนบุคคล</li>
+                    <li>แก้ไขข้อมูลส่วนบุคคลให้ถูกต้องและเป็นปัจจุบัน</li>
+                    <li>ลบหรือทำลายข้อมูลส่วนบุคคล</li>
+                    <li>ระงับการใช้ข้อมูลส่วนบุคคล</li>
+                    <li>ขอให้โอนย้ายข้อมูลส่วนบุคคล</li>
+                    <li>คัดค้านการประมวลผลข้อมูลส่วนบุคคล</li>
+                </ul>
+
+                <div class="alert alert-success mt-3">
+                    <i class="bi bi-info-circle"></i>
+                    <strong>หมายเหตุ:</strong> นโยบายนี้มีผลบังคับใช้ตั้งแต่วันที่ 14 พฤศจิกายน 2568
+                    และอาจมีการปรับปรุงเป็นครั้งคราว
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
             </div>
         </div>
     </div>

@@ -9,7 +9,7 @@
             </div>
             <div class="card-body">
                 <div class="alert alert-info">
-                    <strong>ข้อมูลผู้ใช้:</strong> {{ profile.firstname }} {{ profile.lastname }} ({{ profile.get_gender_display }}, {{ profile.age }} ปี, โทร: {{ profile.phone }})
+                    <strong>ข้อมูลผู้ใช้:</strong> {{ profile.firstname }} {{ profile.lastname }} ({{ profile.get_gender_display }}, อายุ: {{ profile.get_age_display }}, โทร: {{ profile.phone }})
                 </div>
                 <form method="post">
                     {% csrf_token %}

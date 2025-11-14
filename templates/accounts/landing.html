@@ -1,0 +1,405 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Welcome to Health Progress Tracking{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+        color: white;
+        padding: 3rem 1rem;
+        margin: -1rem -1rem 2rem -1rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M50 10 L90 90 L10 90 Z" fill="rgba(255,255,255,0.03)"/></svg>') repeat;
+        opacity: 0.5;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .hero-section h1 {
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    .hero-section p {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        opacity: 0.95;
+    }
+
+    .feature-card {
+        background: white;
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(16, 185, 129, 0.2);
+    }
+
+    .feature-icon {
+        font-size: 3rem;
+        color: #10b981;
+        margin-bottom: 1rem;
+        display: block;
+    }
+
+    .feature-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 0.5rem;
+    }
+
+    .feature-description {
+        color: #64748b;
+        font-size: 0.95rem;
+    }
+
+    .cta-section {
+        background: linear-gradient(135deg, #f0fdf4 0%, #d1fae5 100%);
+        padding: 2rem;
+        border-radius: 16px;
+        text-align: center;
+        margin: 2rem 0;
+    }
+
+    .cta-section h2 {
+        color: #047857;
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .stats-section {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin: 2rem 0;
+    }
+
+    .stat-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        text-align: center;
+        border-left: 4px solid #10b981;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #10b981;
+        margin-bottom: 0.25rem;
+    }
+
+    .stat-label {
+        color: #64748b;
+        font-size: 0.9rem;
+    }
+
+    .pdpa-section {
+        background: #fff7ed;
+        border: 2px solid #fb923c;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 2rem 0;
+    }
+
+    .pdpa-section h3 {
+        color: #ea580c;
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .pdpa-section ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .pdpa-section li {
+        padding: 0.5rem 0;
+        color: #78350f;
+        display: flex;
+        align-items: start;
+        gap: 0.5rem;
+    }
+
+    .pdpa-section li i {
+        color: #10b981;
+        margin-top: 0.25rem;
+    }
+
+    @media (min-width: 768px) {
+        .hero-section {
+            padding: 5rem 2rem;
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+        }
+
+        .hero-section p {
+            font-size: 1.3rem;
+        }
+
+        .stats-section {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="hero-content">
+        <h1><i class="bi bi-heart-pulse-fill"></i> Health Progress Tracking</h1>
+        <p>ติดตามสุขภาพของคุณอย่างครอบคลุม พร้อมคำแนะนำเฉพาะบุคคล</p>
+        <div>
+            <a href="{% url 'accounts:register' %}" class="btn btn-light btn-lg me-2 mb-2">
+                <i class="bi bi-person-plus"></i> ลงทะเบียน
+            </a>
+            <a href="{% url 'accounts:login' %}" class="btn btn-outline-light btn-lg mb-2">
+                <i class="bi bi-box-arrow-in-right"></i> เข้าสู่ระบบ
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <!-- Features Section -->
+    <h2 class="text-center mb-4" style="color: #047857; font-weight: 700;">
+        <i class="bi bi-stars"></i> คุณสมบัติเด่น
+    </h2>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <div class="feature-card">
+                <i class="bi bi-graph-up-arrow feature-icon"></i>
+                <div class="feature-title">ติดตามข้อมูลสุขภาพ</div>
+                <div class="feature-description">
+                    บันทึกและติดตามค่าสุขภาพต่างๆ เช่น ความดัน น้ำหนัก BMI ไขมัน และอื่นๆ
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="feature-card">
+                <i class="bi bi-clipboard-pulse feature-icon"></i>
+                <div class="feature-title">วิเคราะห์แนวโน้ม</div>
+                <div class="feature-description">
+                    ดูกราฟและแนวโน้มการเปลี่ยนแปลงของค่าสุขภาพ พร้อมเปรียบเทียบข้อมูล
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="feature-card">
+                <i class="bi bi-heart-pulse feature-icon"></i>
+                <div class="feature-title">คำแนะนำเฉพาะบุคคล</div>
+                <div class="feature-description">
+                    รับคำแนะนำสุขภาพที่เหมาะสมกับเพศ อายุ และสภาพร่างกายของคุณ
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="feature-card">
+                <i class="bi bi-shield-check feature-icon"></i>
+                <div class="feature-title">ความปลอดภัยสูง</div>
+                <div class="feature-description">
+                    ข้อมูลของคุณได้รับการปกป้องด้วยระบบรักษาความปลอดภัยขั้นสูง
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="feature-card">
+                <i class="bi bi-phone feature-icon"></i>
+                <div class="feature-title">ใช้งานง่ายบนมือถือ</div>
+                <div class="feature-description">
+                    ออกแบบมาให้ใช้งานบนมือถือได้อย่างสะดวกสบาย ทุกที่ ทุกเวลา
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="feature-card">
+                <i class="bi bi-clock-history feature-icon"></i>
+                <div class="feature-title">ประวัติการบันทึก</div>
+                <div class="feature-description">
+                    เข้าถึงประวัติการบันทึกย้อนหลัง พร้อมเปรียบเทียบการเปลี่ยนแปลง
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="stats-section">
+        <div class="stat-card">
+            <div class="stat-number"><i class="bi bi-speedometer2"></i> 17+</div>
+            <div class="stat-label">ค่าสุขภาพที่ติดตามได้</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number"><i class="bi bi-graph-up"></i> 100%</div>
+            <div class="stat-label">การวิเคราะห์แม่นยำ</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number"><i class="bi bi-shield-check"></i> 24/7</div>
+            <div class="stat-label">เข้าถึงข้อมูลได้ทุกเวลา</div>
+        </div>
+    </div>
+
+    <!-- PDPA Section -->
+    <div class="pdpa-section">
+        <h3>
+            <i class="bi bi-shield-lock-fill"></i>
+            นโยบายความเป็นส่วนตัว (PDPA)
+        </h3>
+        <p style="color: #78350f; margin-bottom: 1rem;">
+            เราให้ความสำคัญกับความเป็นส่วนตัวและการปกป้องข้อมูลส่วนบุคคลของคุณ
+            ตามพระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 (PDPA)
+        </p>
+        <ul>
+            <li>
+                <i class="bi bi-check-circle-fill"></i>
+                <span>เราเก็บรวบรวมข้อมูลเพื่อการให้บริการติดตามสุขภาพเท่านั้น</span>
+            </li>
+            <li>
+                <i class="bi bi-check-circle-fill"></i>
+                <span>ข้อมูลของคุณจะถูกเข้ารหัสและเก็บรักษาอย่างปลอดภัย</span>
+            </li>
+            <li>
+                <i class="bi bi-check-circle-fill"></i>
+                <span>เราจะไม่เปิดเผยข้อมูลของคุณกับบุคคลที่สาม โดยไม่ได้รับความยินยอม</span>
+            </li>
+            <li>
+                <i class="bi bi-check-circle-fill"></i>
+                <span>คุณมีสิทธิ์เข้าถึง แก้ไข ลบ หรือขอรับข้อมูลส่วนบุคคลของคุณได้ตลอดเวลา</span>
+            </li>
+            <li>
+                <i class="bi bi-check-circle-fill"></i>
+                <span>เราใช้ข้อมูลเพื่อวิเคราะห์และให้คำแนะนำสุขภาพที่เหมาะสมกับคุณ</span>
+            </li>
+        </ul>
+        <div class="mt-3">
+            <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#pdpaModal">
+                <i class="bi bi-file-text"></i> อ่านนโยบายฉบับเต็ม
+            </button>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="cta-section">
+        <h2>พร้อมที่จะเริ่มต้นดูแลสุขภาพแล้วหรือยัง?</h2>
+        <p style="color: #047857; margin-bottom: 1.5rem;">
+            ลงทะเบียนตอนนี้ และเริ่มติดตามสุขภาพของคุณอย่างมีประสิทธิภาพ
+        </p>
+        <a href="{% url 'accounts:register' %}" class="btn btn-success btn-lg">
+            <i class="bi bi-rocket-takeoff"></i> เริ่มต้นใช้งานฟรี
+        </a>
+    </div>
+</div>
+
+<!-- PDPA Modal -->
+<div class="modal fade" id="pdpaModal" tabindex="-1" aria-labelledby="pdpaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white;">
+                <h5 class="modal-title" id="pdpaModalLabel">
+                    <i class="bi bi-shield-lock-fill"></i> นโยบายความเป็นส่วนตัว (PDPA)
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6 class="fw-bold text-success">1. การเก็บรวบรวมข้อมูลส่วนบุคคล</h6>
+                <p>
+                    เราเก็บรวบรวมข้อมูลส่วนบุคคลดังต่อไปนี้:
+                </p>
+                <ul>
+                    <li>ข้อมูลส่วนตัว: ชื่อ นามสกุล วันเกิด เพศ เบอร์โทรศัพท์</li>
+                    <li>ข้อมูลสุขภาพ: ความดันโลหิต น้ำหนัก ส่วนสูง ค่าไขมัน ระดับน้ำตาล และข้อมูลสุขภาพอื่นๆ</li>
+                    <li>ข้อมูลการใช้งาน: ประวัติการเข้าสู่ระบบ IP Address</li>
+                </ul>
+
+                <h6 class="fw-bold text-success mt-3">2. วัตถุประสงค์ในการใช้ข้อมูล</h6>
+                <ul>
+                    <li>เพื่อให้บริการติดตามและวิเคราะห์ข้อมูลสุขภาพ</li>
+                    <li>เพื่อให้คำแนะนำสุขภาพที่เหมาะสมกับแต่ละบุคคล</li>
+                    <li>เพื่อพัฒนาและปรับปรุงระบบให้มีประสิทธิภาพมากขึ้น</li>
+                    <li>เพื่อการรักษาความปลอดภัยและป้องกันการใช้งานที่ผิดกฎหมาย</li>
+                </ul>
+
+                <h6 class="fw-bold text-success mt-3">3. การเปิดเผยข้อมูล</h6>
+                <p>
+                    เราจะไม่เปิดเผยข้อมูลส่วนบุคคลของคุณให้แก่บุคคลที่สาม เว้นแต่:
+                </p>
+                <ul>
+                    <li>ได้รับความยินยอมจากคุณ</li>
+                    <li>เป็นไปตามที่กฎหมายกำหนด</li>
+                    <li>เพื่อปกป้องสิทธิและทรัพย์สินของเราและผู้ใช้งาน</li>
+                </ul>
+
+                <h6 class="fw-bold text-success mt-3">4. การรักษาความปลอดภัยข้อมูล</h6>
+                <p>
+                    เราใช้มาตรการรักษาความปลอดภัยทางเทคนิคและการบริหารจัดการที่เหมาะสม เพื่อปกป้องข้อมูลส่วนบุคคล
+                    จากการสูญหาย การเข้าถึง ทำลาย ใช้ แปลง แก้ไข หรือเปิดเผยโดยไม่ได้รับอนุญาต
+                </p>
+
+                <h6 class="fw-bold text-success mt-3">5. สิทธิของเจ้าของข้อมูล</h6>
+                <p>คุณมีสิทธิในการ:</p>
+                <ul>
+                    <li>เข้าถึงและขอรับสำเนาข้อมูลส่วนบุคคล</li>
+                    <li>แก้ไขข้อมูลส่วนบุคคลให้ถูกต้องและเป็นปัจจุบัน</li>
+                    <li>ลบหรือทำลายข้อมูลส่วนบุคคล</li>
+                    <li>ระงับการใช้ข้อมูลส่วนบุคคล</li>
+                    <li>ขอให้โอนย้ายข้อมูลส่วนบุคคล</li>
+                    <li>คัดค้านการประมวลผลข้อมูลส่วนบุคคล</li>
+                </ul>
+
+                <h6 class="fw-bold text-success mt-3">6. การติดต่อเรา</h6>
+                <p>
+                    หากคุณมีคำถามเกี่ยวกับนโยบายความเป็นส่วนตัวนี้ หรือต้องการใช้สิทธิของคุณ
+                    กรุณาติดต่อเราผ่านทางระบบหรือติดต่อผู้ดูแลระบบ
+                </p>
+
+                <div class="alert alert-success mt-3">
+                    <i class="bi bi-info-circle"></i>
+                    <strong>หมายเหตุ:</strong> นโยบายนี้มีผลบังคับใช้ตั้งแต่วันที่ 14 พฤศจิกายน 2568
+                    และอาจมีการปรับปรุงเป็นครั้งคราว
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

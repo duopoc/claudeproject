@@ -11,7 +11,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('health/', include('health_app.urls')),
-    path('', RedirectView.as_view(url='/accounts/login/', permanent=False)),
+    path('', RedirectView.as_view(url='/accounts/', permanent=False)),
 ]
 
 if settings.DEBUG:

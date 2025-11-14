@@ -61,7 +61,7 @@ def register_view(request):
             profile.firstname = form.cleaned_data['firstname']
             profile.lastname = form.cleaned_data['lastname']
             profile.gender = form.cleaned_data['gender']
-            profile.age = form.cleaned_data['age']
+            profile.birthdate = form.cleaned_data['birthdate']
             profile.phone = form.cleaned_data['phone']
             profile.is_active_status = False  # Needs admin approval
             profile.role = 'normal'
@@ -225,9 +225,9 @@ def mfa_setup_view(request):
 def profile_view(request):
     """User profile view"""
     profile = request.user.profile
-    
+
     # Check if profile is incomplete
-    profile_incomplete = not profile.firstname or not profile.lastname or not profile.age
+    profile_incomplete = not profile.firstname or not profile.lastname or not profile.birthdate
     
     if request.method == 'POST':
         form = UserProfileForm(request.POST, request.FILES, instance=profile)
@@ -443,3 +443,10 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     """Custom password reset confirm view"""
     template_name = 'accounts/password_reset_confirm.html'
     success_url = reverse_lazy('accounts:password_reset_complete')
+
+
+def landing_page(request):
+    """Landing page view"""
+    if request.user.is_authenticated:
+        return redirect('health_app:dashboard')
+    return render(request, 'accounts/landing.html')

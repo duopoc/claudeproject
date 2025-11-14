@@ -169,7 +169,7 @@ class HealthRecord(models.Model):
     def get_muscle_percent_status(self):
         """Get muscle percent status based on age and gender with exact conditions"""
         muscle = float(self.muscle_percent)
-        age = self.user.profile.age
+        age = self.user.profile.get_age_years()
         gender = self.user.profile.gender
         
         if gender == 'female':

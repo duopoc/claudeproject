@@ -13,8 +13,13 @@ class UserRegistrationForm(UserCreationForm):
     firstname = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}), label='ชื่อ')
     lastname = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}), label='นามสกุล')
     gender = forms.ChoiceField(choices=UserProfile.GENDER_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}), label='เพศ')
-    age = forms.IntegerField(required=True, widget=forms.NumberInput(attrs={'class': 'form-control'}), label='อายุ')
+    birthdate = forms.DateField(required=True, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}), label='วันเกิด')
     phone = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}), label='เบอร์โทรศัพท์')
+    pdpa_accepted = forms.BooleanField(
+        required=True,
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        label='ยอมรับข้อกำหนดและเงื่อนไขการใช้งานและนโยบายความเป็นส่วนตัว (PDPA)'
+    )
     
     class Meta:
         model = User
@@ -37,24 +42,24 @@ class UserProfileForm(forms.ModelForm):
     """User profile update form"""
     class Meta:
         model = UserProfile
-        fields = ['firstname', 'lastname', 'gender', 'age', 'phone', 'profile_picture', 'nickname']
+        fields = ['firstname', 'lastname', 'gender', 'birthdate', 'phone', 'profile_picture', 'nickname']
         widgets = {
             'firstname': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
             'lastname': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
             'gender': forms.Select(attrs={'class': 'form-control', 'required': True}),
-            'age': forms.NumberInput(attrs={'class': 'form-control', 'required': True, 'min': 1, 'max': 120}),
+            'birthdate': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'required': True}),
             'phone': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
             'profile_picture': forms.FileInput(attrs={'class': 'form-control'}),
             'nickname': forms.TextInput(attrs={'class': 'form-control'}),
         }
-    
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Make these fields required for editing
         self.fields['firstname'].required = True
         self.fields['lastname'].required = True
         self.fields['gender'].required = True
-        self.fields['age'].required = True
+        self.fields['birthdate'].required = True
         self.fields['phone'].required = True
 
 
@@ -79,12 +84,12 @@ class UserManagementForm(forms.ModelForm):
     """Form for admin to manage users"""
     class Meta:
         model = UserProfile
-        fields = ['firstname', 'lastname', 'gender', 'age', 'phone', 'role', 'is_active_status', 'is_banned']
+        fields = ['firstname', 'lastname', 'gender', 'birthdate', 'phone', 'role', 'is_active_status', 'is_banned']
         widgets = {
             'firstname': forms.TextInput(attrs={'class': 'form-control'}),
             'lastname': forms.TextInput(attrs={'class': 'form-control'}),
             'gender': forms.Select(attrs={'class': 'form-control'}),
-            'age': forms.NumberInput(attrs={'class': 'form-control'}),
+            'birthdate': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'phone': forms.TextInput(attrs={'class': 'form-control'}),
             'role': forms.Select(attrs={'class': 'form-control'}),
             'is_active_status': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
@@ -98,15 +103,15 @@ class AdminUserCreationForm(forms.ModelForm):
     email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'class': 'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}), label='รหัสผ่าน')
     password_confirm = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}), label='ยืนยันรหัสผ่าน')
-    
+
     class Meta:
         model = UserProfile
-        fields = ['firstname', 'lastname', 'gender', 'age', 'phone', 'role', 'is_active_status']
+        fields = ['firstname', 'lastname', 'gender', 'birthdate', 'phone', 'role', 'is_active_status']
         widgets = {
             'firstname': forms.TextInput(attrs={'class': 'form-control'}),
             'lastname': forms.TextInput(attrs={'class': 'form-control'}),
             'gender': forms.Select(attrs={'class': 'form-control'}),
-            'age': forms.NumberInput(attrs={'class': 'form-control'}),
+            'birthdate': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'phone': forms.TextInput(attrs={'class': 'form-control'}),
             'role': forms.Select(attrs={'class': 'form-control'}),
             'is_active_status': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
